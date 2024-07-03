@@ -5,4 +5,6 @@ SOURCES = \
 	main.c
 
 # Options that get passed to the C compiler
-#CFLAGS = -DDEBUG
+CFLAGS = -DAIRSPEED=30.0
+CFLAGS += -DWINGAREA=1.0
+#CFLAGS += -DDEBUG
