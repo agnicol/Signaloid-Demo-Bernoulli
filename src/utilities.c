@@ -10,7 +10,7 @@ void printUsage(void) {
   fprintf(stderr, "\n");
   printCommonUsage();
   fprintf(stderr,
-          " [-v, --airspeed <Airspeed in meters per second (Default: %.2f)>]\n"
+          " [-s, --airspeed <Airspeed in meters per second (Default: %.2f)>]\n"
           "	[-a, --area <Wing area in square meters (Default: '%.2f')>]\n",
           DEFAULT_AIRSPEED, DEFAULT_WING_AREA);
   fprintf(stderr, "\n");
@@ -48,7 +48,7 @@ getCommandLineArguments(int argc, char *argv[],
   setDefaultCommandLineArguments(arguments);
 
   DemoOption options[] = {
-      {.opt = "v",
+      {.opt = "s",
        .optAlternative = "airspeed",
        .hasArg = true,
        .foundArg = &airspeedArg,
