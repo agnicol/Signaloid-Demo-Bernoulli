@@ -3,6 +3,7 @@
 #include "common.h"
 #include <assert.h>
 #include <stdio.h>
+#include <string.h>
 
 void printUsage(void) {
   fprintf(stderr, "Example: Airfoil lift force calculation\n");
