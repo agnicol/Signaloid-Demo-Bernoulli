@@ -54,10 +54,14 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
 
-  double airspeed;
+  double airspeed; // Airspeed in m/s
+#ifdef DEBUG
+  airspeed = arguments.airspeed;
+#else
   airspeed = UxHwDoubleUniformDist(
       arguments.airspeed * (1.0 - arguments.airspeed_uncertainty),
       arguments.airspeed * (1.0 + arguments.airspeed_uncertainty));
+#endif
 
   double elevation_m; // Elevation above sea level in meters
 #ifdef DEBUG
@@ -83,8 +87,8 @@ int main(int argc, char *argv[]) {
   printf("Lift Coefficient: %.2f\n", CL);
 
   // Calculate lift force
-  double lift_force = 0.5 * air_density * airspeed *
-                      airspeed * arguments.wing_area * CL;
+  double lift_force =
+      0.5 * air_density * airspeed * airspeed * arguments.wing_area * CL;
 
   printf("Air speed: %.2f m/s\n", airspeed);
   printf("Wing area: %.2f m^2\n", arguments.wing_area);
