@@ -1,0 +1,3 @@
+[submodule "submodules/Signaloid-Demo-CommonUtilityRoutines"]
+	path = submodules/Signaloid-Demo-CommonUtilityRoutines
+	url = https://github.com/signaloid/Signaloid-Demo-CommonUtilityRoutines
