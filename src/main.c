@@ -1,5 +1,7 @@
+#include "utilities.h"
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #ifndef DEBUG
 #include <uxhw.h>
 #endif
@@ -27,26 +29,27 @@ double calculate_air_density(double elevation_m) {
 
 // Calculate lift coefficient based on angle of attack (linear approximation)
 double calculate_lift_coefficient(double AoA_deg) {
-  double
-      CL0; // Lift coefficient at zero AoA
-           // Assume a cambered aerofoil with a CL0 value of between 0.2 and 0.6
+  double CL0; // Lift coefficient at zero AoA
 #ifdef DEBUG
   CL0 = 0.2;
 #else
+  // Assume a cambered aerofoil with a CL0 value of between 0.2 and 0.6
   CL0 = UxHwDoubleUniformDist(0.2, 0.6);
 #endif
   double slope; // Lift curve slope (linear variation)
-                // Assume linear slope is somewhere between 0.1 and 0.2
 #ifdef DEBUG
   slope = 0.1;
 #else
+  // Assume linear slope is somewhere between 0.1 and 0.2
   slope = UxHwDoubleUniformDist(0.1, 0.2);
 #endif
   double AoA_rad = AoA_deg * M_PI / 180.0;
   return CL0 + slope * AoA_rad;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+  CommandLineArguments arguments;
+
   double elevation_m; // Elevation above sea level in meters
 #ifdef DEBUG
   elevation_m = 1000.0;
@@ -60,8 +63,8 @@ int main() {
 #ifdef DEBUG
   AoA_deg = 5.0;
 #else
-                  // Assume a safe (i.e. non-stall) AoA of +/- 10 degrees
-  AoA_deg = UxHwDoubleUniformDist(-10.0, 10.0);
+  // Assume a safe (i.e. non-stall) AoA of -5 to +10 degrees
+  AoA_deg = UxHwDoubleUniformDist(-5.0, 10.0);
 #endif
   printf("Angle of attack (degrees): %.2f\n", AoA_deg);
 
@@ -71,7 +74,8 @@ int main() {
   printf("Lift Coefficient: %.2f\n", CL);
 
   // Calculate lift force
-  double lift_force = 0.5 * air_density * AIRSPEED * AIRSPEED * WINGAREA * CL;
+  double lift_force = 0.5 * air_density * arguments.airspeed *
+                      arguments.airspeed * arguments.wing_area * CL;
 
   printf("Lift Force: %.2f N\n", lift_force);
 
