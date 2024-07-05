@@ -49,6 +49,10 @@ double calculate_lift_coefficient(double AoA_deg) {
 
 int main(int argc, char *argv[]) {
   CommandLineArguments arguments;
+  // Get command line arguments.
+  if (getCommandLineArguments(argc, argv, &arguments)) {
+    exit(EXIT_FAILURE);
+  }
 
   double elevation_m; // Elevation above sea level in meters
 #ifdef DEBUG

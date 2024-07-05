@@ -1,6 +1,7 @@
 
 #include "utilities.h"
 #include "common.h"
+#include <assert.h>
 #include <stdio.h>
 
 void printUsage(void) {
@@ -8,8 +9,8 @@ void printUsage(void) {
   fprintf(stderr, "\n");
   printCommonUsage();
   fprintf(stderr,
-          " [-v, --airspeed <Airspeed in meters per second (Default: %d)>]\n"
-          "	[-a, --area <Wing area in square meters (Default: '%d')>]\n",
+          " [-v, --airspeed <Airspeed in meters per second (Default: %.2f)>]\n"
+          "	[-a, --area <Wing area in square meters (Default: '%.2f')>]\n",
           DEFAULT_AIRSPEED, DEFAULT_WING_AREA);
   fprintf(stderr, "\n");
 }
@@ -39,8 +40,8 @@ void setDefaultCommandLineArguments(CommandLineArguments *arguments) {
 CommonConstantReturnType
 getCommandLineArguments(int argc, char *argv[],
                         CommandLineArguments *arguments) {
-  const double *airspeedArg = NULL;
-  const double *wingareaArg = NULL;
+  const char *airspeedArg = NULL;
+  const char *wingareaArg = NULL;
 
   assert(arguments != NULL);
   setDefaultCommandLineArguments(arguments);
