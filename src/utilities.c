@@ -9,12 +9,13 @@ void printUsage(void) {
   fprintf(stderr, "Example: Airfoil lift force calculation\n");
   fprintf(stderr, "\n");
   printCommonUsage();
-  fprintf(stderr,
-          " [-s, --airspeed <Airspeed in meters per second (Default: %.2f)>]\n"
-          " [-u, --uncertainty <Percentage uncertainty in airspeed value "
-          "(Default: 0.05, range: 0-1.0)>]\n"
-          "	[-a, --area <Wing area in square meters (Default: '%.2f')>]\n",
-          DEFAULT_AIRSPEED, DEFAULT_WING_AREA);
+  fprintf(
+      stderr,
+      "	[-s, --airspeed <Airspeed in meters per second (Default: %.2f)>]\n"
+      " [-u, --uncertainty <Percentage uncertainty in airspeed value "
+      "(Default: %.2f, range: 0-1.0)>]\n"
+      "	[-a, --area <Wing area in square meters (Default: %.2f)>]\n",
+      DEFAULT_AIRSPEED, DEFAULT_UNCERTAINTY, DEFAULT_WING_AREA);
   fprintf(stderr, "\n");
 }
 
@@ -35,7 +36,7 @@ void setDefaultCommandLineArguments(CommandLineArguments *arguments) {
   *arguments = (CommandLineArguments){
       .common = (CommonCommandLineArguments){0},
       .airspeed = DEFAULT_AIRSPEED,
-      .airspeed_uncertainty = 0.05,
+      .airspeed_uncertainty = DEFAULT_UNCERTAINTY,
       .wing_area = DEFAULT_WING_AREA,
   };
 #pragma GCC diagnostic pop
