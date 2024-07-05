@@ -34,4 +34,5 @@ getCommandLineArguments(int argc, char *argv[],
                         CommandLineArguments *arguments);
 
 #define DEFAULT_AIRSPEED (30.0)
+#define DEFAULT_UNCERTAINTY (0.05)
 #define DEFAULT_WING_AREA (1.0)
