@@ -11,6 +11,7 @@ typedef struct CommandLineArguments {
   CommonCommandLineArguments common;
 
   double airspeed;
+  double airspeed_uncertainty;
   double wing_area;
 } CommandLineArguments;
 

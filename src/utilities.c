@@ -11,6 +11,8 @@ void printUsage(void) {
   printCommonUsage();
   fprintf(stderr,
           " [-s, --airspeed <Airspeed in meters per second (Default: %.2f)>]\n"
+          " [-u, --uncertainty <Percentage uncertainty in airspeed value "
+          "(Default: 0.05, range: 0-1.0)>]\n"
           "	[-a, --area <Wing area in square meters (Default: '%.2f')>]\n",
           DEFAULT_AIRSPEED, DEFAULT_WING_AREA);
   fprintf(stderr, "\n");
@@ -33,6 +35,7 @@ void setDefaultCommandLineArguments(CommandLineArguments *arguments) {
   *arguments = (CommandLineArguments){
       .common = (CommonCommandLineArguments){0},
       .airspeed = DEFAULT_AIRSPEED,
+      .airspeed_uncertainty = 0.05,
       .wing_area = DEFAULT_WING_AREA,
   };
 #pragma GCC diagnostic pop
@@ -42,6 +45,7 @@ CommonConstantReturnType
 getCommandLineArguments(int argc, char *argv[],
                         CommandLineArguments *arguments) {
   const char *airspeedArg = NULL;
+  const char *airspeedUncertaintyArg = NULL;
   const char *wingareaArg = NULL;
 
   assert(arguments != NULL);
@@ -52,6 +56,11 @@ getCommandLineArguments(int argc, char *argv[],
        .optAlternative = "airspeed",
        .hasArg = true,
        .foundArg = &airspeedArg,
+       .foundOpt = NULL},
+      {.opt = "u",
+       .optAlternative = "uncertainty",
+       .hasArg = true,
+       .foundArg = &airspeedUncertaintyArg,
        .foundOpt = NULL},
       {.opt = "a",
        .optAlternative = "area",
@@ -104,8 +113,8 @@ getCommandLineArguments(int argc, char *argv[],
     double airspeed;
     int ret = parseDoubleChecked(airspeedArg, &airspeed);
 
-    if (ret != kCommonConstantReturnTypeSuccess) {
-      fprintf(stderr, "Error: The airspeed must be a real number.\n");
+    if ((ret != kCommonConstantReturnTypeSuccess) || (airspeed <= 0.0)) {
+      fprintf(stderr, "Error: The airspeed must be a positive real number.\n");
       printUsage();
       return kCommonConstantReturnTypeError;
     }
@@ -113,12 +122,27 @@ getCommandLineArguments(int argc, char *argv[],
     arguments->airspeed = airspeed;
   }
 
+  if (airspeedUncertaintyArg != NULL) {
+    double airspeed_uncertainty;
+    int ret = parseDoubleChecked(airspeedUncertaintyArg, &airspeed_uncertainty);
+
+    if ((ret != kCommonConstantReturnTypeSuccess) ||
+        (airspeed_uncertainty < 0.0) || (airspeed_uncertainty > 1.0)) {
+      fprintf(stderr, "Error: The uncertainty must be a real number between "
+                      "0.0 and 1.0.\n");
+      printUsage();
+      return kCommonConstantReturnTypeError;
+    }
+
+    arguments->airspeed_uncertainty = airspeed_uncertainty;
+  }
+
   if (wingareaArg != NULL) {
     double wingarea;
     int ret = parseDoubleChecked(wingareaArg, &wingarea);
 
-    if (ret != kCommonConstantReturnTypeSuccess) {
-      fprintf(stderr, "Error: The wing area must be a real number.\n");
+    if ((ret != kCommonConstantReturnTypeSuccess) || (wingarea <= 0.0)) {
+      fprintf(stderr, "Error: The wing area must be a positive real number.\n");
       printUsage();
       return kCommonConstantReturnTypeError;
     }
