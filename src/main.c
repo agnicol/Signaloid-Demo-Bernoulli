@@ -77,6 +77,8 @@ int main(int argc, char *argv[]) {
   double lift_force = 0.5 * air_density * arguments.airspeed *
                       arguments.airspeed * arguments.wing_area * CL;
 
+  printf("Air speed: %.2f m/s\n", arguments.airspeed);
+  printf("Wing area: %.2f m^2\n", arguments.wing_area);
   printf("Lift Force: %.2f N\n", lift_force);
 
   return 0;
